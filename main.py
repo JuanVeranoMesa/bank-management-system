@@ -1,5 +1,9 @@
 import random
 
+from account import Account
+from coin_collector import CoinCollector
+from bank import Bank
+
 
 def draw_main():
     print('============================================================')
@@ -15,10 +19,6 @@ def draw_main():
     print('9. Close an account')
     print('10. End program')
     print('============================================================')
-
-
-def account_list_creation(supported_accounts):
-    return [None] * supported_accounts
 
 
 def account_creation(bank):
@@ -191,109 +191,14 @@ def atm_calculation():
     return amount_of_20, amount_of_10, amount_of_5
 
 
-class Bank:
-    supported_accounts = 100
-    def __init__(self):
-        self.account_list = account_list_creation(Bank.supported_accounts)
-
-    def add_account_to_bank(self, account):
-        for i in range(len(self.account_list)):
-            if self.account_list[i] is None:
-                self.account_list[i] = account
-                return True
-            
-        print('\nNo more accounts available')
-        return False
-
-    def remove_account_from_bank(self, account_to_remove):
-        for i in range(len(self.account_list)):
-            if self.account_list[i] is not None:
-                if self.account_list[i].account_number == account_to_remove.account_number:
-                    self.account_list[i] = None
-                    break
-                
-    def find_account(self, account_number):
-        for i in range(len(self.account_list)):
-            if self.account_list[i] is not None:
-                if self.account_list[i].account_number == account_number:
-                    return self.account_list[i]
-
-class Account:
-    def __init__(self, account_number, owner_first_name, owner_last_name, pin, balance):
-        self.account_number = account_number
-        self.owner_first_name = owner_first_name
-        self.owner_last_name = owner_last_name
-        self.pin = pin
-        self.balance = balance
-
-    def deposit(self, amount):
-        self.balance += amount
-        return self.balance
-
-    def withdraw(self, amount):
-        if amount > self.balance:
-            print(f'Insufficient funds in account {self.account_number}')
-            return self.balance
-        self.balance -= amount
-        return self.balance
-
-    def is_valid_pin(self, pin):
-        return self.pin == pin
-    
-    def __str__(self):
-        self_info = '\n============================================================\n'
-        self_info += f'Account Number: {self.account_number}\n'
-        self_info += f'Owner First Name: {self.owner_first_name}\n'
-        self_info += f'Owner Last Name: {self.owner_last_name}\n'
-        self_info += f'Balance: ${self.balance:,.2f}\n'
-        self_info += '============================================================\n'
-        return self_info
-
-class CoinCollector:
-    def __init__(self):
-        self.penny = 0
-        self.nickel = 0
-        self.dime = 0
-        self.quarter = 0
-        self.half_dollar = 0
-        self.whole_dollar = 0
-        self.rejected_change = []
-
-    def parse_change(self, change):
-        split_change = list(change)
-        for char in split_change:
-            if char == 'P':
-                self.penny += 1
-            elif char == 'N':
-                self.nickel += 1
-            elif char == 'D':
-                self.dime += 1
-            elif char == 'Q':
-                self.quarter += 1
-            elif char == 'H':
-                self.half_dollar += 1
-            elif char == 'W':
-                self.whole_dollar += 1
-            else:
-                self.rejected_change.append(char)
-        
-        return(self.calculate_amount())
-
-    def calculate_amount(self):
-        amount = self.penny * .01
-        amount += self.nickel * .05
-        amount += self.dime * .1
-        amount += self.quarter * .25
-        amount += self.half_dollar * .5
-        amount += self.whole_dollar
-
-        print(f'${amount:,.2f} in coins deposited into account')
-        return amount
-
-
 def bank_manager():
     current_input = None
     bank = Bank()
+    #test accounts
+    user_1 = Account(10000000, 'John', 'Smith', '1234', 10000)
+    user_2 = Account(20000000, 'Jane', 'Doe', '1234', 0)
+    bank.add_account_to_bank(user_1)
+    bank.add_account_to_bank(user_2)
 
     while current_input != 10:
         draw_main()
