@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# MacOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# PyCharm / JetBrains
+.idea/
+
+# Logs
+*.log
+
+# Local data (we'll use this later for JSON persistence)
+data/
+*.json
+
+# Environment variables
+.env
