@@ -1,8 +1,8 @@
-def account_list_creation(supported_accounts):
-    return [None] * supported_accounts
+def account_list_creation(SUPPORTED_ACCOUNTS):
+    return [None] * SUPPORTED_ACCOUNTS
 
 class Bank:
-    supported_accounts = 100
+    SUPPORTED_ACCOUNTS = 100
     def __init__(self):
         self.account_list = account_list_creation(Bank.supported_accounts)
 
