@@ -20,6 +20,25 @@ class Account:
     def is_valid_pin(self, pin):
         return self.pin == pin
     
+    def to_dict(self): 
+        return {
+        'account_number': self.account_number,
+        'owner_first_name': self.owner_first_name,
+        'owner_last_name': self.owner_last_name,
+        'pin': self.pin,
+        'balance': self.balance
+    }
+
+    @classmethod
+    def from_dict(cls, account_data):
+        return cls(
+            account_data['account_number'],
+            account_data['owner_first_name'],
+            account_data['owner_last_name'],
+            account_data['pin'],
+            account_data['balance']
+        )
+    
     def __str__(self):
         self_info = '\n============================================================\n'
         self_info += f'Account Number: {self.account_number}\n'

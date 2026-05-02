@@ -11,6 +11,7 @@ from input_helpers import (
     get_amount,
     get_amount_multiple
 )
+from storage import save_accounts, load_accounts
 
 
 def draw_main():
@@ -95,11 +96,7 @@ def atm_calculation():
 def bank_manager():
     current_input = None
     bank = Bank()
-    #test accounts
-    user_1 = Account(10000000, 'John', 'Smith', '1234', 10000)
-    user_2 = Account(20000000, 'Jane', 'Doe', '1234', 0)
-    bank.add_account_to_bank(user_1)
-    bank.add_account_to_bank(user_2)
+    load_accounts(bank)
 
     while current_input != 10:
         draw_main()
@@ -117,6 +114,7 @@ def bank_manager():
             if bank.add_account_to_bank(account) == True:
                 print(account)
                 print(f'Your new account pin is: {account.pin}')
+                save_accounts(bank)
 
         if current_input == 2:
             account= prompt_for_account_number_and_pin(bank)
@@ -126,13 +124,15 @@ def bank_manager():
         if current_input == 3:
             account = prompt_for_account_number_and_pin(bank)
             if account is not None:
-                change_pin(account)      
+                change_pin(account)    
+                save_accounts(bank)  
 
         if current_input == 4:
             account = prompt_for_account_number_and_pin(bank)
             if account is not None:
                 account.deposit(get_amount('deposit'))
                 print(f'New balance: ${account.balance:,.2f}')
+                save_accounts(bank)
 
         if current_input == 5:
             print('Account to Transfer From:')
@@ -150,6 +150,7 @@ def bank_manager():
                 print(f'New balance in account {account_1.account_number}: ${account_1.balance:,.2f}')
                 print(f'New balance in account {account_2.account_number}: ${account_2.balance:,.2f}')
                 print('Transfer Complete')
+                save_accounts(bank)
             else:
                 print(f'Insufficient funds in account {account_1.account_number}')
 
@@ -158,6 +159,7 @@ def bank_manager():
             if account is not None:
                 account.withdraw(get_amount('withdraw'))
                 print(f'New balance: ${account.balance:,.2f}')
+                save_accounts(bank)
 
         if current_input == 7:
             account = prompt_for_account_number_and_pin(bank)
@@ -178,6 +180,7 @@ def bank_manager():
                     print(f'Number of 10-dollar bills: {amount_10}')
                     print(f'Number of 5 dollar bills: {amount_5}')
                     print(f'New balance: {account.balance:,.2f}')
+                    save_accounts(bank)
 
         if current_input == 8:
             account = prompt_for_account_number_and_pin(bank)
@@ -187,12 +190,14 @@ def bank_manager():
                 account.deposit(coin_count.parse_change(coin_input))
                 print(f'Invalid coins: {''.join(coin_count.rejected_change)}')
                 print(f'New balance: {account.balance:,.2f}')
+                save_accounts(bank)
         
         if current_input == 9:
             account = prompt_for_account_number_and_pin(bank)
             if account is not None:
                 print(f'Account {account.account_number} closed')
                 bank.remove_account_from_bank(account)
+                save_accounts(bank)
         
 
 if __name__ == '__main__':
